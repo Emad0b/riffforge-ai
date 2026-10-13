@@ -1,0 +1,6 @@
+.deps
+.git
+runtime
+apps/web/node_modules
+apps/web/.next
+**/__pycache__

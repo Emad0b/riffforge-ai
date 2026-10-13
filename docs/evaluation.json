@@ -1,0 +1,15 @@
+{
+  "onset_precision": 1.0,
+  "onset_recall": 1.0,
+  "onset_f1": 1.0,
+  "onset_offset_f1": 1.0,
+  "reference_notes": 14,
+  "predicted_notes": 14,
+  "onset_tolerance_ms": 50,
+  "pitch_tolerance_cents": 50,
+  "offset_tolerance": "max(50ms, 20% of reference duration)",
+  "seconds": 2.737,
+  "model": "basic-pitch-0.4.0-onnx",
+  "model_sha256": "2c3c1d144bfa61ad236e92e169c13535c880469a12a047d4e73451f2c059a0ec",
+  "dataset": "One self-authored synthetic plucked-string riff. Not a real-guitar benchmark."
+}

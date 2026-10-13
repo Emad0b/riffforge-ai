@@ -1,0 +1,12 @@
+.deps/
+.browsers/
+.venv/
+runtime/
+node_modules/
+.next/
+__pycache__/
+.pytest_cache/
+*.pyc
+.env
+test-results/
+playwright-report/

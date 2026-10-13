@@ -1,0 +1,18 @@
+# Install basic-pitch separately with --no-deps (explicit ONNX runtime).
+numpy==1.26.4
+scipy==1.17.1
+librosa==0.11.0
+mir-eval==0.8.2
+pretty-midi==0.2.11.post0
+resampy==0.4.2
+scikit-learn==1.9.1
+onnxruntime==1.31.0
+imageio-ffmpeg==0.6.0
+fastapi==0.143.0
+uvicorn==0.54.0
+python-multipart==0.0.32
+pytest==9.1.1
+httpx==0.28.1
+setuptools==80.10.2
+soundfile==0.14.0
+celery[redis]==5.6.3

@@ -1,0 +1,37 @@
+services:
+  api:
+    build: .
+    ports: ['127.0.0.1:8400:8400']
+    volumes: [audio:/data]
+    environment:
+      RIFFFORGE_BROKER: redis://redis:6379/0
+    healthcheck:
+      test: ['CMD', 'python', '-c', "import urllib.request; urllib.request.urlopen('http://localhost:8400/api/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  worker:
+    build: .
+    command: ['celery', '-A', 'riffforge.tasks:celery', 'worker', '--beat', '--concurrency=1', '--loglevel=INFO', '--schedule=/data/celerybeat-schedule']
+    volumes: [audio:/data]
+    environment:
+      RIFFFORGE_BROKER: redis://redis:6379/0
+    depends_on:
+      api: {condition: service_healthy}
+      redis: {condition: service_healthy}
+  redis:
+    image: redis:7.4-alpine
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  web:
+    build: apps/web
+    environment:
+      API_URL: http://api:8400
+    ports: ['127.0.0.1:5178:5178']
+    depends_on:
+      api: {condition: service_healthy}
+volumes:
+  audio:

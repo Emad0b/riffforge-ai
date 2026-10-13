@@ -1,0 +1,244 @@
+{
+  "raw_notes": [
+    {
+      "id": "0",
+      "start": 13.4056,
+      "end": 14.0803,
+      "pitch": 59,
+      "confidence": 0.7424
+    },
+    {
+      "id": "1",
+      "start": 12.3955,
+      "end": 13.0805,
+      "pitch": 62,
+      "confidence": 0.7424
+    },
+    {
+      "id": "2",
+      "start": 11.3842,
+      "end": 12.0821,
+      "pitch": 64,
+      "confidence": 0.7512
+    },
+    {
+      "id": "3",
+      "start": 10.3973,
+      "end": 11.0823,
+      "pitch": 59,
+      "confidence": 0.7416
+    },
+    {
+      "id": "4",
+      "start": 9.3976,
+      "end": 10.0955,
+      "pitch": 55,
+      "confidence": 0.7443
+    },
+    {
+      "id": "5",
+      "start": 8.3991,
+      "end": 9.0841,
+      "pitch": 52,
+      "confidence": 0.7413
+    },
+    {
+      "id": "6",
+      "start": 7.3994,
+      "end": 8.0973,
+      "pitch": 50,
+      "confidence": 0.7345
+    },
+    {
+      "id": "7",
+      "start": 6.3893,
+      "end": 7.0859,
+      "pitch": 52,
+      "confidence": 0.7401
+    },
+    {
+      "id": "8",
+      "start": 5.4012,
+      "end": 6.0875,
+      "pitch": 55,
+      "confidence": 0.7476
+    },
+    {
+      "id": "9",
+      "start": 4.3911,
+      "end": 5.0877,
+      "pitch": 57,
+      "confidence": 0.7435
+    },
+    {
+      "id": "10",
+      "start": 3.403,
+      "end": 4.0777,
+      "pitch": 59,
+      "confidence": 0.7404
+    },
+    {
+      "id": "11",
+      "start": 2.3929,
+      "end": 3.0779,
+      "pitch": 57,
+      "confidence": 0.7472
+    },
+    {
+      "id": "12",
+      "start": 1.4048,
+      "end": 2.0911,
+      "pitch": 55,
+      "confidence": 0.7508
+    },
+    {
+      "id": "13",
+      "start": 0.3947,
+      "end": 1.0797,
+      "pitch": 52,
+      "confidence": 0.7411
+    }
+  ],
+  "notes": [
+    {
+      "id": "13",
+      "start": 0.3947,
+      "end": 1.0797,
+      "pitch": 52,
+      "confidence": 0.7411,
+      "string": 4,
+      "fret": 2
+    },
+    {
+      "id": "12",
+      "start": 1.4048,
+      "end": 2.0911,
+      "pitch": 55,
+      "confidence": 0.7508,
+      "string": 3,
+      "fret": 0
+    },
+    {
+      "id": "11",
+      "start": 2.3929,
+      "end": 3.0779,
+      "pitch": 57,
+      "confidence": 0.7472,
+      "string": 3,
+      "fret": 2
+    },
+    {
+      "id": "10",
+      "start": 3.403,
+      "end": 4.0777,
+      "pitch": 59,
+      "confidence": 0.7404,
+      "string": 3,
+      "fret": 4
+    },
+    {
+      "id": "9",
+      "start": 4.3911,
+      "end": 5.0877,
+      "pitch": 57,
+      "confidence": 0.7435,
+      "string": 3,
+      "fret": 2
+    },
+    {
+      "id": "8",
+      "start": 5.4012,
+      "end": 6.0875,
+      "pitch": 55,
+      "confidence": 0.7476,
+      "string": 3,
+      "fret": 0
+    },
+    {
+      "id": "7",
+      "start": 6.3893,
+      "end": 7.0859,
+      "pitch": 52,
+      "confidence": 0.7401,
+      "string": 4,
+      "fret": 2
+    },
+    {
+      "id": "6",
+      "start": 7.3994,
+      "end": 8.0973,
+      "pitch": 50,
+      "confidence": 0.7345,
+      "string": 4,
+      "fret": 0
+    },
+    {
+      "id": "5",
+      "start": 8.3991,
+      "end": 9.0841,
+      "pitch": 52,
+      "confidence": 0.7413,
+      "string": 4,
+      "fret": 2
+    },
+    {
+      "id": "4",
+      "start": 9.3976,
+      "end": 10.0955,
+      "pitch": 55,
+      "confidence": 0.7443,
+      "string": 3,
+      "fret": 0
+    },
+    {
+      "id": "3",
+      "start": 10.3973,
+      "end": 11.0823,
+      "pitch": 59,
+      "confidence": 0.7416,
+      "string": 2,
+      "fret": 0
+    },
+    {
+      "id": "2",
+      "start": 11.3842,
+      "end": 12.0821,
+      "pitch": 64,
+      "confidence": 0.7512,
+      "string": 1,
+      "fret": 0
+    },
+    {
+      "id": "1",
+      "start": 12.3955,
+      "end": 13.0805,
+      "pitch": 62,
+      "confidence": 0.7424,
+      "string": 2,
+      "fret": 3
+    },
+    {
+      "id": "0",
+      "start": 13.4056,
+      "end": 14.0803,
+      "pitch": 59,
+      "confidence": 0.7424,
+      "string": 3,
+      "fret": 4
+    }
+  ],
+  "model": "basic-pitch-0.4.0-onnx",
+  "model_sha256": "2c3c1d144bfa61ad236e92e169c13535c880469a12a047d4e73451f2c059a0ec",
+  "seconds": 11.44,
+  "tuning": [
+    40,
+    45,
+    50,
+    55,
+    59,
+    64
+  ],
+  "warnings": [
+    "Confidence is an uncalibrated model activation."
+  ]
+}
