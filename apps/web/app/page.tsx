@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import type WaveSurfer from "wavesurfer.js";
 import {
   AudioLines,
   ArrowUpRight,
@@ -65,7 +66,8 @@ export default function Studio() {
     [string, setString] = useState(1),
     [editBusy, setEditBusy] = useState(false);
   const waveform = useRef<HTMLDivElement>(null),
-    wave = useRef<any>(null),
+    wave = useRef<WaveSurfer | null>(null),
+    tabScroll = useRef<HTMLDivElement>(null),
     file = useRef<HTMLInputElement>(null),
     loopRef = useRef(false);
   async function api(path: string, options: RequestInit = {}) {
@@ -133,6 +135,7 @@ export default function Studio() {
     if (!job || job.state !== "complete" || !waveform.current) return;
     setTime(0);
     setPlaying(false);
+    setSpeed("1");
     (async () => {
       const [{ default: WaveSurfer }, r] = await Promise.all([
         import("wavesurfer.js"),
@@ -237,6 +240,17 @@ export default function Studio() {
   const notes = job?.result?.notes || [],
     active = notes.find((n) => time >= n.start && time < n.end),
     complete = job?.state === "complete";
+  useEffect(() => {
+    const container = tabScroll.current;
+    if (!container || !active) return;
+    const left = 56 + notes.findIndex((n) => n.id === active.id) * 62;
+    if (
+      left < container.scrollLeft ||
+      left + 45 > container.scrollLeft + container.clientWidth
+    ) {
+      container.scrollTo({ left: Math.max(0, left - 100), behavior: "smooth" });
+    }
+  }, [active?.id]);
   return (
     <div className="shell">
       <aside>
@@ -541,7 +555,7 @@ export default function Studio() {
                   </div>
                 ) : (
                   <>
-                    <div className="tab-scroll">
+                    <div className="tab-scroll" ref={tabScroll}>
                       <svg
                         role="img"
                         aria-label="Interactive six-string guitar tablature"

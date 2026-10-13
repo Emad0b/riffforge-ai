@@ -26,6 +26,13 @@ test("real riff: upload, inference, audio sync, correction and exports", async (
   ).toBeVisible();
   await expect(page.locator(".time")).not.toHaveText("0.0 / 15.0s");
   await page.getByRole("button", { name: "Pause audio", exact: true }).click();
+  const waveform = page.locator(".waveform");
+  const bounds = await waveform.boundingBox();
+  await waveform.click({ position: { x: bounds!.width * 0.85, y: 40 } });
+  await expect
+    .poll(() => page.locator(".tab-scroll").evaluate((el) => el.scrollLeft))
+    .toBeGreaterThan(100);
+  await waveform.click({ position: { x: bounds!.width * 0.03, y: 40 } });
   await page.getByRole("button", { name: "Loop full clip" }).click();
   await expect(
     page.getByRole("button", { name: "Loop full clip" }),
@@ -49,6 +56,11 @@ test("real riff: upload, inference, audio sync, correction and exports", async (
   await page.getByRole("button", { name: "MIDI", exact: true }).click();
   expect((await midiDownload).suggestedFilename()).toBe("riffforge.mid");
   await page.screenshot({ path: "../../docs/studio.png", fullPage: true });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBeTruthy();
   expect(errors).toEqual([]);
 });
 test("mobile layout and invalid upload", async ({ page }) => {
@@ -57,13 +69,11 @@ test("mobile layout and invalid upload", async ({ page }) => {
   await expect(
     page.getByRole("button", { name: "Choose audio file" }),
   ).toBeEnabled();
-  await page
-    .getByLabel("Upload audio")
-    .setInputFiles({
-      name: "fake.wav",
-      mimeType: "audio/wav",
-      buffer: Buffer.from("not audio"),
-    });
+  await page.getByLabel("Upload audio").setInputFiles({
+    name: "fake.wav",
+    mimeType: "audio/wav",
+    buffer: Buffer.from("not audio"),
+  });
   await expect(page.locator('.error[role="alert"]')).toContainText(
     "Unsupported audio signature",
   );

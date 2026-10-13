@@ -166,3 +166,48 @@ def test_real_model_reference():
     assert score["onset_offset_f1"] >= 0.8, score
     assert len(result["model_sha256"]) == 64
     assert all(n["start"] < n["end"] for n in result["notes"])
+
+
+def test_upload_size_limit_cleans_partial_files(monkeypatch):
+    import riffforge.api
+
+    before = set(ROOT.iterdir())
+    monkeypatch.setattr(riffforge.api, "MAX_BYTES", 100)
+    assert upload(session(), b"RIFF" + b"0" * 200).status_code == 413
+    assert set(ROOT.iterdir()) == before
+
+
+def test_worker_recovers_and_fences_stale_results(monkeypatch):
+    import time
+    from riffforge import engine
+    from riffforge.worker import run_once
+
+    headers = session()
+    job = upload(headers).json()["id"]
+    with db() as connection:
+        connection.execute(
+            "UPDATE jobs SET state='running',started=?,lease='expired' WHERE id=?",
+            (time.time() - 301, job),
+        )
+    monkeypatch.setattr(
+        engine, "transcribe", lambda path: {"notes": [], "raw_notes": []}
+    )
+    assert run_once(job)
+    assert (
+        client.get("/api/transcriptions/" + job, headers=headers).json()["state"]
+        == "complete"
+    )
+    with db() as connection:
+        connection.execute(
+            "UPDATE jobs SET state='queued',result=NULL WHERE id=?", (job,)
+        )
+
+    def superseded(path):
+        with db() as connection:
+            connection.execute("UPDATE jobs SET lease='new-owner' WHERE id=?", (job,))
+        return {"notes": [{"pitch": 99}]}
+
+    monkeypatch.setattr(engine, "transcribe", superseded)
+    assert run_once(job)
+    result = client.get("/api/transcriptions/" + job, headers=headers).json()
+    assert result["state"] == "running" and result["result"] is None
