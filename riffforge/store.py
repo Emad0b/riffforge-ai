@@ -1,7 +1,7 @@
 import os
 import sqlite3
-from pathlib import Path
 from contextlib import contextmanager
+from pathlib import Path
 
 ROOT = Path(os.getenv("RIFFFORGE_DATA", "runtime")).resolve()
 ROOT.mkdir(parents=True, exist_ok=True)

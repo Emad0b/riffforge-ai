@@ -1,7 +1,9 @@
 import json
 from pathlib import Path
-import numpy as np
+
 import mir_eval.transcription
+import numpy as np
+
 from .engine import transcribe
 
 

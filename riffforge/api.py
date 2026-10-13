@@ -1,15 +1,18 @@
 import hashlib
 import io
 import json
+import logging
+import os
 import secrets
 import shutil
 import time
 import uuid
-import os
-import logging
+from typing import Annotated
+
 from fastapi import Depends, FastAPI, File, Header, HTTPException, UploadFile
 from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel, Field
+
 from .audio import MAX_BYTES, decode
 from .store import ROOT, db
 from .tab import TUNING
@@ -99,7 +102,7 @@ async def enqueue(file, user):
 
                 await run_in_threadpool(process.apply_async, args=[job_id], retry=False)
             except Exception:
-                logging.warning(
+                logging.getLogger(__name__).warning(
                     "Broker unavailable; durable queue will be reconciled.",
                     exc_info=True,
                 )
@@ -113,12 +116,14 @@ async def enqueue(file, user):
 
 
 @app.post("/api/transcriptions", status_code=202)
-async def upload(file: UploadFile = File(...), user=Depends(owner)):
+async def upload(
+    file: Annotated[UploadFile, File()], user: Annotated[str, Depends(owner)]
+):
     return await enqueue(file, user)
 
 
 @app.post("/api/demo", status_code=202)
-async def demo(user=Depends(owner)):
+async def demo(user: Annotated[str, Depends(owner)]):
     path = __import__("pathlib").Path("tests/fixtures/reference.wav")
     return await enqueue(
         UploadFile(
@@ -129,7 +134,7 @@ async def demo(user=Depends(owner)):
 
 
 @app.get("/api/transcriptions")
-def list_jobs(user=Depends(owner)):
+def list_jobs(user: Annotated[str, Depends(owner)]):
     with db() as connection:
         return [
             dict(row)
@@ -141,7 +146,7 @@ def list_jobs(user=Depends(owner)):
 
 
 @app.get("/api/transcriptions/{job_id}")
-def get_job(job_id: str, user=Depends(owner)):
+def get_job(job_id: str, user: Annotated[str, Depends(owner)]):
     job = owned(job_id, user)
     job.pop("owner")
     job["result"] = json.loads(job["result"]) if job["result"] else None
@@ -149,7 +154,7 @@ def get_job(job_id: str, user=Depends(owner)):
 
 
 @app.get("/api/transcriptions/{job_id}/audio")
-def audio(job_id: str, user=Depends(owner)):
+def audio(job_id: str, user: Annotated[str, Depends(owner)]):
     owned(job_id, user)
     return FileResponse(
         ROOT / job_id / "audio.wav",
@@ -174,7 +179,7 @@ class Correction(BaseModel):
 
 
 @app.patch("/api/transcriptions/{job_id}")
-def correct(job_id: str, change: Correction, user=Depends(owner)):
+def correct(job_id: str, change: Correction, user: Annotated[str, Depends(owner)]):
     job = owned(job_id, user)
     if job["state"] != "complete":
         raise HTTPException(409, "Transcription is not complete.")
@@ -206,7 +211,7 @@ def correct(job_id: str, change: Correction, user=Depends(owner)):
 
 
 @app.get("/api/transcriptions/{job_id}/export/{format}")
-def export(job_id: str, format: str, user=Depends(owner)):
+def export(job_id: str, format: str, user: Annotated[str, Depends(owner)]):
     job = owned(job_id, user)
     if not job["result"]:
         raise HTTPException(409, "Transcription is not ready.")
@@ -241,7 +246,7 @@ def export(job_id: str, format: str, user=Depends(owner)):
 
 
 @app.delete("/api/transcriptions/{job_id}", status_code=204)
-def delete(job_id: str, user=Depends(owner)):
+def delete(job_id: str, user: Annotated[str, Depends(owner)]):
     owned(job_id, user)
     with db() as connection:
         connection.execute("BEGIN IMMEDIATE")

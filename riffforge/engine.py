@@ -1,8 +1,10 @@
 import hashlib
 import time
 from functools import lru_cache
+
 from basic_pitch import FilenameSuffix, build_icassp_2022_model_path
 from basic_pitch.inference import Model, predict
+
 from .tab import dominant_line
 
 

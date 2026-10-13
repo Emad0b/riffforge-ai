@@ -1,4 +1,3 @@
-import hashlib
 import io
 import itertools
 import json
@@ -8,9 +7,10 @@ from pathlib import Path
 
 os.environ["RIFFFORGE_DATA"] = tempfile.mkdtemp(prefix="riffforge-test-")
 from fastapi.testclient import TestClient
+
 from riffforge.api import app
-from riffforge.tab import assign, positions, movement, dominant_line
-from riffforge.store import db, ROOT
+from riffforge.store import ROOT, db
+from riffforge.tab import assign, dominant_line, movement, positions
 
 client = TestClient(app)
 
@@ -37,7 +37,7 @@ def test_fret_mapping_and_global_optimum():
 
     def cost(path):
         return sum(0.06 * p[1] for p in path) + sum(
-            movement(a, b) for a, b in zip(path, path[1:])
+            movement(a, b) for a, b in itertools.pairwise(path)
         )
 
     best = min(
@@ -179,6 +179,7 @@ def test_upload_size_limit_cleans_partial_files(monkeypatch):
 
 def test_worker_recovers_and_fences_stale_results(monkeypatch):
     import time
+
     from riffforge import engine
     from riffforge.worker import run_once
 

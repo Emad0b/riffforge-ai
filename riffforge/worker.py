@@ -2,9 +2,10 @@
 
 import json
 import logging
+import shutil
 import time
 import uuid
-import shutil
+
 from .store import ROOT, db
 
 
@@ -46,7 +47,7 @@ def run_once(job_id=None):
                 (json.dumps(result), job["id"], lease),
             )
     except Exception:
-        logging.exception("Transcription failed for %s", job["id"])
+        logging.getLogger(__name__).exception("Transcription failed for %s", job["id"])
         with db() as connection:
             connection.execute(
                 "UPDATE jobs SET state='failed', error=? WHERE id=? AND lease=?",

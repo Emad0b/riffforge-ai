@@ -1,7 +1,9 @@
 """Redis delivery plus durable database reconciliation after a broker outage."""
 
 import os
+
 from celery import Celery
+
 from .worker import run_once
 
 celery = Celery(

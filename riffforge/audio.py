@@ -1,6 +1,7 @@
 import subprocess
 import wave
 from pathlib import Path
+
 import imageio_ffmpeg
 
 MAX_BYTES = 20 * 1024 * 1024
