@@ -1,5 +1,7 @@
 # RiffForge AI
 
+RiffForge AI turns an audio clip into editable guitar tablature. Use it to work out how a passage might be played, listen alongside the tab, and adjust notes or finger positions.
+
 [![Verification](https://github.com/Emad0b/riffforge-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/Emad0b/riffforge-ai/actions/workflows/ci.yml)
 
 **Hear it. Forge it.** A working audio-to-guitar-tab studio with real neural transcription, globally optimized fingerings, synchronized playback, and editable results.
